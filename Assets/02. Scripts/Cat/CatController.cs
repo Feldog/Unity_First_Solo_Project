@@ -44,6 +44,10 @@ public class CatController : MonoBehaviour
 
             soundManager.OnJumpSound();
         }
+
+        Vector3 angle = transform.eulerAngles;
+        angle.z = rb.linearVelocityY * 5f;
+        transform.eulerAngles = angle;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
