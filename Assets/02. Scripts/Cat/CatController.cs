@@ -46,7 +46,7 @@ public class CatController : MonoBehaviour
         }
 
         Vector3 angle = transform.eulerAngles;
-        angle.z = rb.linearVelocityY * 5f;
+        angle.z = rb.linearVelocityY * 3f;
         transform.eulerAngles = angle;
     }
 
@@ -57,6 +57,12 @@ public class CatController : MonoBehaviour
             jumpCount = 0;
             isGrounded = true;
         }
+
+        if(collision.gameObject.CompareTag("Hit"))
+        {
+            soundManager.OnHitSound();
+            GameManager.instance.GameOver();
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -64,6 +70,16 @@ public class CatController : MonoBehaviour
         if(collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Fruit"))
+        {
+            collision.gameObject.SetActive(false);
+            GameManager.instance.Score++;
+            collision.GetComponentInParent<ItemEvent>().Particle.SetActive(true);
         }
     }
 }
